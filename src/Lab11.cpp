@@ -10,9 +10,8 @@ void loop();
 SYSTEM_THREAD(ENABLED);
 #include "LIS3DH.h"
 #include "blynk.h"
-#include "oled-wing-adafruit.h"
 
-OledWingAdafruit display;
+
 LIS3DHSPI accel(SPI, D3, WKP);
 
 const unsigned long PRINT_SAMPLE_PERIOD = 100;
@@ -26,15 +25,6 @@ void setup() {
   //init pinmode
   pinMode(D3, INPUT);
   
-
-  // init display values
-  display.setup();
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0,0);
-  display.println();
-  display.display();
 
   //set up blynk
   Blynk.begin("8gmPQYYTl5fLuty94QJs3WJ-sWudPSyu", IPAddress(167, 172, 234, 162), 9090);
@@ -84,9 +74,7 @@ void setup() {
 // loop() runs over and over again, as quickly as it can execute.
 void loop() {
 
-  display.loop();
-  if (millis() - lastPrintSample >= PRINT_SAMPLE_PERIOD) {
-		lastPrintSample = millis();
+
 
 		LIS3DHSample sample;
 		if (accel.getSample(sample)) {
@@ -107,4 +95,3 @@ void loop() {
 			Serial.println("no sample");
 		}
 	}
-}
